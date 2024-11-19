@@ -9,8 +9,6 @@ declare -a directories=(
     "terraform/prd/rds"
 )
 
-cd scores || { echo "Failed to enter 'scores' directory"; exit 1; }
-
 for dir in "${directories[@]}"; do
     echo "Processing directory: $dir"
     cd "$dir" || { echo "Failed to enter directory $dir"; exit 1; }
