@@ -53,7 +53,7 @@
     107.20.181.192 demo.scores.xyz
     54.163.156.225 demo.scores.xyz
 - try in browser:
-    http://demo.scores.xyz/welcome
+    http://demo.scores.xyz/welcome <br>
     http://demo.scores.xyz/kube-system-pods
 
 ### AWS terraform apply
