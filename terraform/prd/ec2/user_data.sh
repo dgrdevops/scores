@@ -50,10 +50,12 @@ rm -rf awscliv2.zip
 access_key="$(aws secretsmanager get-secret-value --secret-id prd-aws-credentials --query SecretString --region $region --output text | jq -r '.ACCESS_KEY')"
 secret_key="$(aws secretsmanager get-secret-value --secret-id prd-aws-credentials --query SecretString --region $region --output text | jq -r '.SECRET_ACCESS_KEY')"
 
+su - ubuntu -c 'mkdir -p /home/ubuntu/.aws && touch /home/ubuntu/.aws/config'
 echo "[default]" > /home/ubuntu/.aws/config
 echo "region = $region" >> /home/ubuntu/.aws/config
 echo "output = text" >> /home/ubuntu/.aws/config
 
+su - ubuntu -c 'touch /home/ubuntu/.aws/credentials'
 echo "[default]" > /home/ubuntu/.aws/credentials
 echo "aws_access_key_id = $access_key" >> /home/ubuntu/.aws/credentials
 echo "aws_secret_access_key = $secret_key" >> /home/ubuntu/.aws/credentials
