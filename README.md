@@ -48,10 +48,10 @@
 
 ## Check running app
 
-- do nslookup prd-scores-alb-113286380.us-east-1.elb.amazonaws.com
+- do nslookup prd-scores-alb-2033576954.us-east-1.elb.amazonaws.com
 - update your /etc/hosts file with records (may change):
-    54.243.74.241 demo.scores.xyz
-    3.94.46.38 demo.scores.xyz
+    107.20.181.192 demo.scores.xyz
+    54.163.156.225 demo.scores.xyz
 - try in browser:
     http://demo.scores.xyz/welcome
     http://demo.scores.xyz/kube-system-pods
@@ -59,8 +59,8 @@
 ### AWS terraform apply
 
 ```sh
-git clone git@github.com:dgrdevops/365scores.git
-cd 365scores/terraform/prd/vpc
+git clone git@github.com:dgrdevops/scores.git
+cd scores/terraform/prd/vpc
 terraform init
 terraform plan
 terraform apply -auto-approve
