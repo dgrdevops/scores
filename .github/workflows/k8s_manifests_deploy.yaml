@@ -1,4 +1,4 @@
-name: Deploy to EKS
+name: Deploy GitOps manifests
 
 on:
   push:
