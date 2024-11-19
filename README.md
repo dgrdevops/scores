@@ -59,34 +59,7 @@
 ### AWS terraform apply
 
 ```sh
-git clone git@github.com:dgrdevops/scores.git
-cd scores/terraform/prd/vpc
-terraform init
-terraform plan
-terraform apply -auto-approve
-
-cd ../route53
-terraform init
-terraform plan
-terraform apply -auto-approve
-
-cd ../ec2
-terraform init
-terraform plan
-terraform apply -auto-approve
-
-cd ../ecr
-terraform init
-terraform plan
-terraform apply -auto-approve
-
-cd ../eks
-terraform init
-terraform plan
-terraform apply -auto-approve
-
-cd ../rds
-terraform init
-terraform plan
-terraform apply -auto-approve
+git clone git@github.com:dgrdevops/scores.git &&
+cd scores/ &&
+./deploy_infrastructure.sh
 ```
