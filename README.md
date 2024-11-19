@@ -61,5 +61,6 @@
 ```sh
 git clone git@github.com:dgrdevops/scores.git &&
 cd scores/ &&
+chmod +x deploy_infrastructure.sh &&
 ./deploy_infrastructure.sh
 ```
