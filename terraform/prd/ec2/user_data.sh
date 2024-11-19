@@ -50,9 +50,13 @@ rm -rf awscliv2.zip
 access_key="$(aws secretsmanager get-secret-value --secret-id prd-aws-credentials --query SecretString --region $region --output text | jq -r '.ACCESS_KEY')"
 secret_key="$(aws secretsmanager get-secret-value --secret-id prd-aws-credentials --query SecretString --region $region --output text | jq -r '.SECRET_ACCESS_KEY')"
 
-aws configure set aws_access_key_id $access_key
-aws configure set aws_secret_access_key $secret_key
-aws configure set default.region $region
+echo "[default]" > /home/ubuntu/.aws/config
+echo "region = $region" >> /home/ubuntu/.aws/config
+echo "output = text" >> /home/ubuntu/.aws/config
+
+echo "[default]" > /home/ubuntu/.aws/credentials
+echo "aws_access_key_id = $access_key" >> /home/ubuntu/.aws/credentials
+echo "aws_secret_access_key = $secret_key" >> /home/ubuntu/.aws/credentials
 
 apt-get update && sudo apt-get install -y gnupg software-properties-common
 wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
