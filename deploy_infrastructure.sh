@@ -19,8 +19,8 @@ for dir in "${directories[@]}"; do
     echo "Planning Terraform changes..."
     terraform plan -input=false || { echo "Terraform plan failed in $dir"; exit 1; }
     
-    # echo "Applying Terraform changes..."
-    # terraform apply -auto-approve || { echo "Terraform apply failed in $dir"; exit 1; }
+    echo "Applying Terraform changes..."
+    terraform apply -auto-approve || { echo "Terraform apply failed in $dir"; exit 1; }
     
     cd - > /dev/null || { echo "Failed to return to parent directory"; exit 1; }
 done
