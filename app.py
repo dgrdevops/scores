@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/welcome', methods=['GET'])
 def welcome():
-    return "Welcome to 365Scores EKS Cluster!"
+    return "Welcome to 365Scores EKS Demo Cluster!"
 
 @app.route('/kube-system-pods', methods=['GET'])
 def kube_system_pods():
