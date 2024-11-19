@@ -4,7 +4,7 @@
 2. **Terraform** - for cloud environment provisioning
 3. **K8S** - manifests for kubernetes cluster containing flask-app deployment
 4. **Tools** - python script with boto3 to list aws objects
-5. Implementation as much as possible secured
+5. **Implementation** -  as much as possible secured including sourcing secrets from secrets manager
 
 ## Terraform
 
@@ -44,7 +44,7 @@
 - checks flask-app deployment status on merge
 - for build purpose used auto-deployed self-hosted runner as ec2-instance with role
 - list aws services can be executed by related workflow
-- Tokens stored in AWS Secrets Manager
+- tokens stored in AWS Secrets Manager
 
 ## Check running app
 
