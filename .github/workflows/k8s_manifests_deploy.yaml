@@ -1,0 +1,26 @@
+name: Deploy to EKS
+
+on:
+  push:
+    paths:
+      - 'k8s/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to EKS
+    runs-on: prd-devops-gha-runner
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to EKS
+        run: |
+          aws eks update-kubeconfig --name prd-devops-eks --region us-east-1
+
+      - name: Apply Kubernetes Manifests
+        run: |
+          kubectl apply -f k8s/

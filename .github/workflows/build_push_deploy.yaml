@@ -1,0 +1,59 @@
+name: Build, Push, and Deploy to EKS
+
+on:
+  push:
+    paths:
+      - app.py
+    branches:
+      - main
+  pull_request:
+    paths:
+      - app.py
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: prd-devops-gha-runner
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build -t prd-scores-repo .
+          docker tag prd-scores-repo:latest 650251717049.dkr.ecr.us-east-1.amazonaws.com/prd-scores-repo:latest
+        continue-on-error: false
+
+  push:
+    needs: build
+    if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
+    runs-on: prd-devops-gha-runner
+    steps:
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 650251717049.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Push Docker Image to ECR
+        run: |
+          docker push 650251717049.dkr.ecr.us-east-1.amazonaws.com/prd-scores-repo:latest
+        continue-on-error: false
+
+  deploy:
+    needs: push
+    if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
+    runs-on: prd-devops-gha-runner
+    steps:
+      - name: Connect to EKS cluster
+        run: |
+          aws eks update-kubeconfig --name prd-devops-eks --region us-east-1
+
+      - name: Deploy flask-app
+        run: |
+          kubectl rollout restart deployment/flask-app -n scores
+
+      - name: Check flask-app deployment status
+        run: |
+          kubectl rollout status deployment/flask-app -n scores
+        continue-on-error: false
