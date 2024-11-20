@@ -26,7 +26,7 @@
 13. output - necessary outputs after successful execution
 14. backend - for terraform state stored in S3 and session lock stored in DynamoDB
 
-** terraform flat implementation used for better visability
+** terraform flat implementation used for better visability <br>
 ** trying maximum simulate production implementation
 
 ## K8S
