@@ -48,10 +48,11 @@
 
 ## Check running app
 
-- do nslookup prd-scores-alb-2033576954.us-east-1.elb.amazonaws.com
+- do ```nslookup prd-scores-alb-2033576954.us-east-1.elb.amazonaws.com```
 - update your /etc/hosts file with records (may change):
-    107.20.181.192 demo.scores.xyz
-    54.163.156.225 demo.scores.xyz
+    ```sh
+    sudo echo "107.20.181.192 demo.scores.xyz" >> /etc/hosts && \
+    sudo echo "54.163.156.225 demo.scores.xyz" >> /etc/hosts
 - try in browser:
    <br> http://demo.scores.xyz/welcome <br>
     http://demo.scores.xyz/kube-system-pods
