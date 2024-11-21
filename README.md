@@ -48,8 +48,8 @@
 
 ## Check running app
 
-   <br> http://demo.indevops.io/welcome <br>
-    http://demo.indevops.io/kube-system-pods
+http://demo.indevops.io/welcome <br>
+http://demo.indevops.io/kube-system-pods
 
 ### AWS terraform apply
 
