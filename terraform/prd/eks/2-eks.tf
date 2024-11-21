@@ -178,7 +178,7 @@ resource "kubernetes_storage_class" "ebs_csi_gp3_storage_class" {
 }
 
 resource "aws_eks_access_entry" "from_gha_runner" {
-  cluster_name      = aws_eks_cluster.eks.name
-  principal_arn     = data.terraform_remote_state.ec2.outputs.ec2_devops_gha_runner_role_arn
-  type              = "EC2_LINUX"
+  cluster_name  = aws_eks_cluster.eks.name
+  principal_arn = data.terraform_remote_state.ec2.outputs.ec2_devops_gha_runner_role_arn
+  type          = "EC2_LINUX"
 }
