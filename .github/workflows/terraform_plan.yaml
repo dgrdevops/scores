@@ -102,3 +102,11 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/$GITHUB_REPOSITORY/issues/$PR_NUM/comments \
             -f "body=Path: ${{ matrix.terraform_dir }}, changes detected, please check logs: $TF_SHOW_LINK"
+  terrafom-validation-handler:
+    name: "Terraform validation handler"
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Terraform validation handler
+        id: validation
+        run: echo "Terraform job completed successfully."
