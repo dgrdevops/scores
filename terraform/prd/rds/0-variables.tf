@@ -30,7 +30,7 @@ variable "deployedby" {
 
 variable "application" {
   description = "Application"
-  default     = "devops-db"
+  default     = "devops-rds"
 }
 
 variable "email" {
