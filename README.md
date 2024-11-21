@@ -34,7 +34,7 @@
 - flask-app deployed in terraform inside EKS cluster demonstrating routed requsts
 - deployed appropriate permissions to display all running pods in kube-system namespace
 - application record created in Route53 by external-dns controller
-- ingress alb created by aws-load-balancer controller
+- ingress alb with SSL certificate created by aws-load-balancer controller
 
 
 ## Github workflows
@@ -48,8 +48,8 @@
 
 ## Check running app
 
-http://demo.indevops.io/welcome <br>
-http://demo.indevops.io/kube-system-pods
+<a href="https://demo.indevops.io/welcome" target="_blank">https://demo.indevops.io/welcome</a><br>
+<a href="https://demo.indevops.io/kube-system-pods" target="_blank">https://demo.indevops.io/kube-system-pods</a>
 
 ### AWS terraform apply
 
