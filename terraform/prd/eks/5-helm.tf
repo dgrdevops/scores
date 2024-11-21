@@ -81,13 +81,3 @@ resource "helm_release" "external-dns" {
     helm_release.aws_load_balancer_controller
   ]
 }
-
-resource "kubernetes_namespace" "scores" {
-  metadata {
-    name = "scores"
-  }
-  depends_on = [
-    helm_release.aws_load_balancer_controller,
-    helm_release.external-dns
-  ]
-}
