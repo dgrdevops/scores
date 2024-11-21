@@ -1,0 +1,108 @@
+---
+name: "Terraform Plan Validation"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - terraform/**
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GHA_RUNNER_PAT }}
+
+jobs:
+  terraform:
+    name: "Terraform Plan"
+    runs-on:
+      - prd-devops-gha-runner
+    strategy:
+      fail-fast: false
+      matrix:
+        terraform_dir:
+          [
+            "terraform/backend/",
+            "terraform/ec2/",
+            "terraform/ecr/",
+            "terraform/eks/",
+            "terraform/rds",
+            "terraform/route53/",
+            "terraform/vpc/",
+          ]
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout the repository to the runner
+        uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          token: ${{ env.GITHUB_TOKEN }}
+          filters: |
+            changesFound:
+              - '${{ matrix.terraform_dir }}/**'
+
+      - name: Terraform init
+        if: steps.filter.outputs.changesFound == 'true'
+        working-directory: ${{ matrix.terraform_dir }}
+        id: init
+        run: terraform init
+
+      - name: Terraform format
+        if: steps.filter.outputs.changesFound == 'true'
+        working-directory: ${{ matrix.terraform_dir }}
+        id: fmt
+        run: terraform fmt -check
+
+      - name: Terraform validate
+        if: steps.filter.outputs.changesFound == 'true'
+        working-directory: ${{ matrix.terraform_dir }}
+        id: validate
+        run: terraform validate
+
+      - name: Terraform plan
+        if: steps.filter.outputs.changesFound == 'true'
+        working-directory: ${{ matrix.terraform_dir }}
+        id: plan
+        run: |
+          terraform plan -no-color -input=false -out=tfplan.json -detailed-exitcode || EXIT_CODE=$?
+
+          # Check terraform exit code
+          if [ $EXIT_CODE -eq 1 ]; then
+            echo "Terraform plan failed with exit code 1"
+            exit 1
+          elif [ $EXIT_CODE -eq 2 ]; then
+            export TF_PLAN_CHANGED=true
+          else
+            export TF_PLAN_CHANGED=false
+          fi
+          echo "TF_PLAN_CHANGED=$TF_PLAN_CHANGED" >> $GITHUB_ENV
+
+      - name: Terraform show
+        if: steps.filter.outputs.changesFound == 'true'
+        working-directory: ${{ matrix.terraform_dir }}
+        id: show
+        run: |
+          terraform show tfplan.json
+
+      - name: Comment GH PR
+        if: env.TF_PLAN_CHANGED == 'true' && steps.filter.outputs.changesFound == 'true'
+        working-directory: ${{ matrix.terraform_dir }}
+        id: comment
+        run: |
+          TF_SHOW_LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/"
+          PR_NUM=$(echo $GITHUB_REF_NAME | cut -d'/' -f1)
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/$GITHUB_REPOSITORY/issues/$PR_NUM/comments \
+            -f "body=Path: ${{ matrix.terraform_dir }}, changes detected, please check logs: $TF_SHOW_LINK"
