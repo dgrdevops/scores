@@ -16,11 +16,30 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+      
+      - name: Query ACM certificate ARN
+        id: query_acm
+        run: |
+          ACM_ARN=$(aws acm list-certificates \
+          --query "CertificateSummaryList[?DomainName=='*.indevops.io'].CertificateArn" \
+          --output text)
+          if [ -z "$ACM_ARN" ]; then
+          echo "Error: ACM certificate ARN not found for domain 'indevops.io'"
+          exit 1
+          fi
+          echo "ACM_ARN=$ACM_ARN" >> $GITHUB_ENV
+
+      - name: Set SSL certificate for ingress
+        working-directory: k8s/
+        run: |
+          sed -i "s|<ACM_CERT_ARN>|$ACM_ARN|g" ingress.yaml
 
       - name: Authenticate to EKS
         run: |
           aws eks update-kubeconfig --name prd-devops-eks --region us-east-1
-
-      - name: Apply Kubernetes Manifests
+      
+      - name: Deploy K8S manifests
+        working-directory: k8s/
         run: |
-          kubectl apply -f k8s/
+          kubectl apply -f namespace.yaml && \
+          find . -type f -not -name 'namespace.yaml' -exec kubectl apply -f {} +
