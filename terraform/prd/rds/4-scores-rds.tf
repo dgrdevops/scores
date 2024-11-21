@@ -20,10 +20,10 @@ resource "random_password" "db_password" {
 }
 
 resource "aws_secretsmanager_secret" "db_secret" {
-  name        = "${var.env}-${var.application}-access"
+  name        = "${var.env}-${var.application}-secret"
   description = "Devops DB access credentials for ${var.env} environment."
   tags = {
-    "Name" = "${var.env}-${var.application}-access"
+    "Name" = "${var.env}-${var.application}-secret"
   }
 }
 
