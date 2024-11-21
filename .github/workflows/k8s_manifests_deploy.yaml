@@ -32,7 +32,7 @@ jobs:
       - name: Set SSL certificate for ingress
         working-directory: k8s/
         run: |
-          sed -i "s|<ACM_CERT_ARN>|$ACM_ARN|g" ingress.yaml
+          sed -i "s|<ACM_CERT_ARN>|$ACM_ARN|g" 6-ingress.yaml
 
       - name: Authenticate to EKS
         run: |
@@ -41,5 +41,4 @@ jobs:
       - name: Deploy K8S manifests
         working-directory: k8s/
         run: |
-          kubectl apply -f namespace.yaml && \
-          find . -type f -not -name 'namespace.yaml' -exec kubectl apply -f {} +
+          kubectl apply -f .
