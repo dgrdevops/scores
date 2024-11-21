@@ -34,10 +34,6 @@ jobs:
             "terraform/route53/",
             "terraform/vpc/",
           ]
-    defaults:
-      run:
-        shell: bash
-
     steps:
       - name: Checkout the repository to the runner
         uses: actions/checkout@v4
