@@ -48,14 +48,8 @@
 
 ## Check running app
 
-- do ```nslookup prd-scores-alb-2033576954.us-east-1.elb.amazonaws.com```
-- update your /etc/hosts file with records (may change):
-    ```sh
-    echo "54.163.156.225 demo.scores.xyz" | sudo tee -a /etc/hosts && \
-    echo "107.20.181.192 demo.scores.xyz" | sudo tee -a /etc/hosts
-- try in browser:
-   <br> http://demo.scores.xyz/welcome <br>
-    http://demo.scores.xyz/kube-system-pods
+   <br> http://demo.indevops.io/welcome <br>
+    http://demo.indevops.io/kube-system-pods
 
 ### AWS terraform apply
 
