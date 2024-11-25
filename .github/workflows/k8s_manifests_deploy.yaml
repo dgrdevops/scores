@@ -46,7 +46,7 @@ jobs:
       - name: Verify application endpoints
         run: |
           for endpoint in "/welcome" "/kube-system-pods"; do
-            url="https://indevops.io${endpoint}"
+            url="https://demo.indevops.io${endpoint}"
             status=$(curl -o /dev/null -s -w "%{http_code}" "$url")
             if [ "$status" -ne 200 ]; then
               echo "Error: Endpoint $url returned status code $status"
