@@ -4,11 +4,15 @@ on:
   push:
     paths:
       - app.py
+      - Dockerfile
+      - requirements.txt
     branches:
       - main
   pull_request:
     paths:
       - app.py
+      - Dockerfile
+      - requirements.txt
     branches:
       - main
   workflow_dispatch:
