@@ -42,3 +42,15 @@ jobs:
         working-directory: k8s/
         run: |
           kubectl apply -f .
+
+      - name: Verify application endpoints
+        run: |
+          for endpoint in "/welcome" "/kube-system-pods"; do
+            url="https://indevops.io${endpoint}"
+            status=$(curl -o /dev/null -s -w "%{http_code}" "$url")
+            if [ "$status" -ne 200 ]; then
+              echo "Error: Endpoint $url returned status code $status"
+              exit 1
+            fi
+          done
+          echo "All endpoints responded with status 200"
