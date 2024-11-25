@@ -1,8 +1,8 @@
 locals {
   application_name   = "devops-eks"
   eks_version        = "1.31"
-  ebs_driver_version = "v1.36.0-eksbuild.1"
-  efs_driver_version = "v2.0.8-eksbuild.1"
+  ebs_driver_version = "v1.37.0-eksbuild.1"
+  efs_driver_version = "v2.1.0-eksbuild.1"
 }
 
 variable "env" {
